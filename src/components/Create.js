@@ -1,7 +1,7 @@
 import React , { useState, useEffect  } from 'react';
 import { useHistory } from 'react-router-dom';
 // import data from '../Data';
-import {dbInsert, dbHost, maxLink, addLink} from '../Db';
+import {dbInsert, maxLink} from '../Db';
 
 import {
     Card,
@@ -59,8 +59,7 @@ const Create = ()=> {
     let history = useHistory();
     const [text, setText] = useState('');
     const [datetime_end, setDatetime_end] = useState('');
-    const [todos,setTodos] = useState([]);
-
+    
     let today = new Date();
 
     const date = today.getFullYear()+'-'+((today.getMonth()+1)<10 ? ('0' + (today.getMonth()+1)) : (today.getMonth()+1)) +'-'+today.getDate();
@@ -88,10 +87,16 @@ async function Save() {
     const response = await fetch(maxLink);
     const todo = await response.json();
     let idx = 0;
+    const data_e = new Date(datetime_end + ":00.000Z");
+    
+    const data_ez = data_e.toISOString();
+
+    const data_c = new Date(datetime + ":00.000Z");
+    const data_cz = data_c.toISOString();
 
     if( todo.length > 0 ) { idx = todo[0].id; }
     const maxId = idx + 1;
-    const rec = {id: maxId, text: text, created: datetime, end: datetime_end, completed: false};
+    const rec = {id: maxId, text: text, created: data_cz, end: data_ez, completed: false};
 
     dbInsert(rec);
 
@@ -108,16 +113,7 @@ async function Save() {
   }
 
   useEffect(() => {
-   let todosData;
-    if (typeof(Storage) !== "undefined") {
-   
-      if (localStorage.getItem("myTodo")) {
-             todosData = JSON.parse(localStorage.getItem("myTodo"));
-      } 
-      
-    }
-   
-   setTodos(todosData);
+
     setDatetime_end(datetime2);
   },[datetime2])
 
@@ -156,6 +152,7 @@ async function Save() {
                   label="End"
                   type="datetime-local"
                   defaultValue={datetime2}
+                  value={datetime_end}
                   onChange={handleData}
                   InputLabelProps={{
                   shrink: true,

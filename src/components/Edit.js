@@ -75,7 +75,7 @@ const Edit = (props)=> {
    
           fetch(dbHost+id)
           .then(response => response.json())
-          .then(data => { setTodos(data);  setLoading(false); });
+          .then(data => { console.log(data.created);data.created=data.created.slice(0,16); data.end=data.end.slice(0,16); setTodos(data);  setLoading(false); });
          
          },[id]);
   
@@ -96,9 +96,13 @@ const Edit = (props)=> {
       alert('Wpisz tekst więcej niż 5 znaków');
       return;
   }
+	  todos.end = new Date(todos.end + ":00.000Z");
+	  todos.end = todos.end.toISOString();
+     
+	  todos.created = new Date(todos.created + ":00.000Z");
+	  todos.created = todos.created.toISOString();
 
-
-     dbSave(id,todos);
+	  dbSave(id,todos);
      history.push('/');
     
   
@@ -139,14 +143,14 @@ else {
   <Grid item>
           <Card  className={classes.root}> 
             <CardContent>
-              <Typography className={classes.typography}  variant='body2' name="created">created: {todos.created}  </Typography>
+              <Typography className={classes.typography}  variant='body2' name="created">created: {todos.created.search !== -1?todos.created.replace('T', ' '):todos.created}  </Typography>
                     <TextField style={todos.completed?{textDecoration:  "line-through"}:{textDecoration:  "none"}}
                         id="outlined-multiline-static"   
                         label="Note"
                         multiline
                         rows={4}
                         name="text"
-                        // defaultValue={todos.text}
+                        //defaultValue=""
                         value={todos.text || "Loading"}
                         variant="outlined"
                         className={classes.textField}
@@ -174,7 +178,7 @@ else {
                   id="datetime-local"
                   label="End"
                   type="datetime-local"
-                 defaultValue={todos.end}
+               //  defaultValue={todos.end}
                    value={todos.end || ''}
                    name="end"
                   className={classes.textFieldDate}

@@ -48,7 +48,14 @@ export default function TodoList() {
 
 fetch(dbHost)
 .then(response => response.json())
-.then(data => { setTodos(data); setLoading(false); });
+.then(data => { 
+  
+  for(let i=0; i< data.length; i++)
+  {
+    data[i].end=data[i].end.slice(0,16)
+    data[i].created=data[i].created.slice(0,16)
+  }
+  setTodos(data); setLoading(false); });
 
     },[]);
 
@@ -64,7 +71,7 @@ else {
                   <Paper className={classes.paper} onClick={() => edit(item.id)} key={item.id}>
                     <Grid container wrap="nowrap" spacing={1} className={classes.gridcontainer}>
                       <Grid item className={classes.grid}  >
-                          <Typography variant="body2" ><div style={{fontSize: "small"}}>created</div> {item.created}</Typography>
+                          <Typography variant="body2" ><div style={{fontSize: "small"}}>created</div> {item.created.search !== -1?item.created.replace('T', ' '):item.created}</Typography>
                           <Typography variant="body2" ><div style={{fontSize: "small"}}>end</div> {item.end.search !== -1?item.end.replace('T', ' '):item.end}</Typography>                   
                       </Grid>
                       <Divider variant="middle" />
