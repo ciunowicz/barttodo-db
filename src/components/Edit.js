@@ -1,7 +1,6 @@
 import React , { useState, useEffect  } from 'react';
 import { useParams} from "react-router-dom";
-import {SaveLoc, LoadLoc} from '../LocStore';
-import dbSave ,  { dbSaveCompleted ,dbHost, updateLink, deleteLink } from '../Db';
+import dbSave ,  { dbHost, deleteLink } from '../Db';
 
 
 import {
@@ -19,6 +18,7 @@ import {
   import { makeStyles } from '@material-ui/core/styles';
   import { useHistory } from 'react-router-dom';
   import Container from '@material-ui/core/Container';
+  import CircularProgress from '@material-ui/core/CircularProgress';
   
 
   const useStyles = makeStyles((theme) => ({
@@ -68,13 +68,14 @@ const Edit = (props)=> {
     let history = useHistory();
     const classes = useStyles();
     const [todos,setTodos] = useState({});
+    const [loading, setLoading] = useState(true);
   
 
     useEffect(() => {    
    
           fetch(dbHost+id)
           .then(response => response.json())
-          .then(data => setTodos(data));
+          .then(data => { setTodos(data);  setLoading(false); });
          
          },[id]);
   
@@ -127,6 +128,11 @@ fetch(deleteLink + id)
    setTodos(newTodos);
   }
 
+  if(loading) { return (<div className="circular"><CircularProgress disableShrink /></div>)
+
+} 
+
+else {
       return <Container className={classes.container}  maxWidth="sm" > 
            <Grid container spacing={3} style={{ display: 'flex', justifyContent: 'center'}} >
          
@@ -141,7 +147,7 @@ fetch(deleteLink + id)
                         rows={4}
                         name="text"
                         // defaultValue={todos.text}
-                        value={todos.text || ""}
+                        value={todos.text || "Loading"}
                         variant="outlined"
                         className={classes.textField}
                         onChange={handleText}
@@ -182,7 +188,7 @@ fetch(deleteLink + id)
     </Card>
   </Grid>
   </Grid>  
-</Container>;
+</Container>; }
 }
 
 export default Edit;

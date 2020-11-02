@@ -18,21 +18,18 @@ function NavBar(props) {
     }
 
     return (
+        
         <List component="nav">
             <ListItem component="div" >
 
                 <ListItemText inset>
         
-                    <TypoGraphy color="inherit" variant="subtitle1" onClick={()=>handleClick("/add/")} style={{cursor: 'pointer'}}>
-                        Add  <AddCircleOutlineIcon />
-                    </TypoGraphy>
+                    <TypoGraphy color="inherit" variant="subtitle1" onClick={()=>handleClick("/add/")} style={{cursor: 'pointer'}}> <AddCircleOutlineIcon /></TypoGraphy>
                 </ListItemText>
 
 
                 <ListItemText inset>
-                    <TypoGraphy color="inherit" variant="subtitle1" onClick={()=>handleClick("/")} style={{cursor: 'pointer'}}>
-                        List <ListAltIcon />
-                    </TypoGraphy>
+                    <TypoGraphy color="inherit" variant="subtitle1" onClick={()=>handleClick("/")} style={{cursor: 'pointer'}}><ListAltIcon /></TypoGraphy>
                 </ListItemText>
 
             </ListItem >

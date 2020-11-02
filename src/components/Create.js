@@ -87,8 +87,9 @@ async function Save() {
 
     const response = await fetch(maxLink);
     const todo = await response.json();
+    let idx = 0;
 
-    const idx = todo[0].id;
+    if( todo.length > 0 ) { idx = todo[0].id; }
     const maxId = idx + 1;
     const rec = {id: maxId, text: text, created: datetime, end: datetime_end, completed: false};
 

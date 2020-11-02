@@ -6,7 +6,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar'
 import TypoGraphy from '@material-ui/core/Typography'
 import './List.css';
-
 import Create from './components/Create';
 import Edit from './components/Edit';
 import NavBar from './navbar';
@@ -16,9 +15,9 @@ function App() {
     <div >
       <AppBar color="primary" position="static">
       <Toolbar>
-      <TypoGraphy variant="subtitle1" color="inherit">
-              Bart todo
-      </TypoGraphy>
+        <TypoGraphy  color="inherit" variant="h6">
+        Bart todo
+        </TypoGraphy>
           <NavBar />
           </Toolbar>
         </AppBar>
