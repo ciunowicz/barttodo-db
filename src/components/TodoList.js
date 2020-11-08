@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { dbHost } from '../Db';
+import { dbHost, nullDate  } from '../Db';
 // import data from '../Data';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,9 +24,11 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
   },
   grid: {
-    display: 'flex', 
-    flexDirection: 'row', 
-    justifyContent: 'space-between',
+    //display: 'flex', 
+    // flexDirection: 'row',
+    paddingBottom: 0,
+    marginBottom: 0, 
+    
   },
   gridcontainer: {
     flexDirection: 'column',
@@ -49,11 +51,15 @@ export default function TodoList() {
 fetch(dbHost)
 .then(response => response.json())
 .then(data => { 
-  
+  let dataNull = nullDate.slice(0,16);
   for(let i=0; i< data.length; i++)
   {
+  let data_c = new Date(data[i].created); data[i].created = data_c.toISOString(); 
+  let data_e = new Date(data[i].end); data[i].end = data_e.toISOString();
+  
     data[i].end=data[i].end.slice(0,16)
     data[i].created=data[i].created.slice(0,16)
+    if(data[i].end === dataNull) { data[i].end = "" }
   }
   setTodos(data); setLoading(false); });
 
@@ -64,15 +70,22 @@ if(loading) { return (<div className="circular"><CircularProgress disableShrink 
 } 
 
 else {
+  
   return (
     <div className={classes.root}>
-      {  todos.map(item => {
+      {  todos.map((item,id) => { 
           return (
-                  <Paper className={classes.paper} onClick={() => edit(item.id)} key={item.id}>
+                  <Paper className={classes.paper} onClick={() => edit(item._id)} key={id}>
                     <Grid container wrap="nowrap" spacing={1} className={classes.gridcontainer}>
+                    
+                      {/* <Grid item className={classes.grid}  > */}
                       <Grid item className={classes.grid}  >
-                          <Typography variant="body2" ><div style={{fontSize: "small"}}>created</div> {item.created.search !== -1?item.created.replace('T', ' '):item.created}</Typography>
-                          <Typography variant="body2" ><div style={{fontSize: "small"}}>end</div> {item.end.search !== -1?item.end.replace('T', ' '):item.end}</Typography>                   
+                      <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                        <Typography variant="body2" style={{fontSize: "small", display: 'flex'}}>created</Typography> 
+                        <Typography variant="body2" style={{fontSize: "small", display: 'flex'}}>{item.end !== "" ? 'end' : '' }</Typography></div>
+                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                          <Typography variant="body2" style={{fontSize: "small"}} >{item.created.search !== -1?item.created.replace('T', ' '):item.created}</Typography>
+                          <Typography variant="body2"style={{fontSize: "small"}}> {item.end.search !== -1?item.end.replace('T', ' '):item.end}</Typography></div>                   
                       </Grid>
                       <Divider variant="middle" />
                       <Grid  item xs zeroMinWidth  >

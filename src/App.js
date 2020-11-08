@@ -12,7 +12,7 @@ import NavBar from './navbar';
 
 function App() {
   return (
-    <div >
+    <div>
       <AppBar color="primary" position="static">
       <Toolbar>
         <TypoGraphy  color="inherit" variant="h6">
@@ -29,7 +29,7 @@ function App() {
          <Route path='/edit/:id' component={Edit} />
          </Switch>
        </main>
-    </div>
+       </div>
   );
 }
 

@@ -1,7 +1,7 @@
 import React , { useState, useEffect  } from 'react';
 import { useHistory } from 'react-router-dom';
 // import data from '../Data';
-import {dbInsert, maxLink} from '../Db';
+import {dbInsert, nullDate} from '../Db';
 
 import {
     Card,
@@ -84,19 +84,28 @@ async function Save() {
     return;
 }
 
-    const response = await fetch(maxLink);
+   /*  const response = await fetch(maxLink);
     const todo = await response.json();
     let idx = 0;
-    const data_e = new Date(datetime_end + ":00.000Z");
     
-    const data_ez = data_e.toISOString();
+    if( todo.length > 0 ) { idx = todo[0].id; }
+    const maxId = idx + 1; */
+    let data_ez;
+
+    if(datetime_end === null || datetime_end === '')
+    {
+        data_ez = nullDate;
+    }
+    else {
+        const data_e = new Date(datetime_end + ":00.000Z");
+              data_ez = data_e.toISOString();
+  }
 
     const data_c = new Date(datetime + ":00.000Z");
     const data_cz = data_c.toISOString();
 
-    if( todo.length > 0 ) { idx = todo[0].id; }
-    const maxId = idx + 1;
-    const rec = {id: maxId, text: text, created: data_cz, end: data_ez, completed: false};
+
+    const rec = {text: text, created: data_cz, end: data_ez, completed: false};
 
     dbInsert(rec);
 
@@ -114,7 +123,7 @@ async function Save() {
 
   useEffect(() => {
 
-    setDatetime_end(datetime2);
+    setDatetime_end("");
   },[datetime2])
 
 
@@ -151,7 +160,7 @@ async function Save() {
                   id="datetime-local"
                   label="End"
                   type="datetime-local"
-                  defaultValue={datetime2}
+                  // defaultValue={datetime2}
                   value={datetime_end}
                   onChange={handleData}
                   InputLabelProps={{

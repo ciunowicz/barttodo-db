@@ -2,7 +2,8 @@ import React from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import TypoGraphy from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+// import TypoGraphy from '@material-ui/core/Typography';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import { useHistory } from 'react-router-dom';
@@ -21,15 +22,33 @@ function NavBar(props) {
         
         <List component="nav">
             <ListItem component="div" >
-
-                <ListItemText inset>
-        
-                    <TypoGraphy color="inherit" variant="subtitle1" onClick={()=>handleClick("/add/")} style={{cursor: 'pointer'}}> <AddCircleOutlineIcon /></TypoGraphy>
+               
+                <ListItemText >
+                <Button
+                    variant="contained"
+                    color="primary"
+                    // className={classes.button}
+                    style={{margin: 4}}
+                    startIcon={<AddCircleOutlineIcon />}
+                    onClick={()=>handleClick("/add/")}
+                >
+        Add
+      </Button>
                 </ListItemText>
 
-
-                <ListItemText inset>
-                    <TypoGraphy color="inherit" variant="subtitle1" onClick={()=>handleClick("/")} style={{cursor: 'pointer'}}><ListAltIcon /></TypoGraphy>
+                <ListItemText >
+                    {/* <TypoGraphy color="inherit" variant="subtitle1" onClick={()=>handleClick("/")} style={{cursor: 'pointer'}}><ListAltIcon /></TypoGraphy> */}
+                
+                   <Button
+                    variant="contained"
+                    color="primary"
+                    style={{margin: 4}}
+                    // className={classes.button}
+                    startIcon={<ListAltIcon />}
+                    onClick={()=>handleClick("/")}
+                >
+        List
+      </Button>
                 </ListItemText>
 
             </ListItem >

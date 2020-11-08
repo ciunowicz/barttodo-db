@@ -1,6 +1,6 @@
 import React , { useState, useEffect  } from 'react';
 import { useParams} from "react-router-dom";
-import dbSave ,  { dbHost, deleteLink } from '../Db';
+import dbSave ,  { dbHost, deleteLink, nullDate } from '../Db';
 
 
 import {
@@ -75,7 +75,17 @@ const Edit = (props)=> {
    
           fetch(dbHost+id)
           .then(response => response.json())
-          .then(data => { console.log(data.created);data.created=data.created.slice(0,16); data.end=data.end.slice(0,16); setTodos(data);  setLoading(false); });
+          .then(data => { let data_c = new Date(data.created); 
+           
+            data.created = data_c.toISOString(); 
+            let data_e = new Date(data.end); 
+            data.end = data_e.toISOString();  
+            let dataNull = nullDate.slice(0,16);
+            data.created=data.created.slice(0,16); 
+            data.end=data.end.slice(0,16); 
+            if(data.end === dataNull) { data.end = "" }
+            setTodos(data);  
+            setLoading(false); });
          
          },[id]);
   
@@ -83,26 +93,45 @@ const Edit = (props)=> {
   const Done = (idx) => {
     
     let todo_comp = {...todos, completed: !todos.completed}
+    let todo_db = {...todo_comp};
     
     setTodos(todo_comp);
-    dbSave(idx,todo_comp);
+   
+    if(todo_db.end === '' )
+    { todo_db.end = nullDate; }
+
+    todo_db.created = new Date(todo_db.created + ":00.000Z");
+	  todo_db.created = todo_db.created.toISOString();
+
+    dbSave(idx,todo_db);
+
     
   }
 
 
   function Save() {
-  
+    let newTodos = {...todos};
+
     if(todos.text.trim().length < 5) {
       alert('Wpisz tekst więcej niż 5 znaków');
       return;
   }
-	  todos.end = new Date(todos.end + ":00.000Z");
-	  todos.end = todos.end.toISOString();
-     
-	  todos.created = new Date(todos.created + ":00.000Z");
-	  todos.created = todos.created.toISOString();
 
-	  dbSave(id,todos);
+    if(todos.end !== null && todos.end !== '')
+    {
+      newTodos.end = new Date(newTodos.end + ":00.000Z");
+      newTodos.end = newTodos.end.toISOString();
+    }
+    else 
+    { 
+      newTodos.end = nullDate; }
+    
+  //  return
+     
+	  newTodos.created = new Date(newTodos.created + ":00.000Z");
+	  newTodos.created = newTodos.created.toISOString();
+
+	  dbSave(id,newTodos);
      history.push('/');
     
   
@@ -162,7 +191,7 @@ else {
           <CardActions disableSpacing >
             <div className={classes.cardActions}>
               <div style={{display: 'flex'}}>
-                <IconButton aria-label="done" onClick={()=>Done(todos.id)}>
+                <IconButton aria-label="done" onClick={()=>Done(todos._id)}>
                       <CheckCircleOutlineIcon />
                 </IconButton>
   
@@ -170,7 +199,7 @@ else {
                      <SaveIcon />
                 </IconButton>
   
-                <IconButton aria-label="delete" onClick={()=>Delete(todos.id)}>
+                <IconButton aria-label="delete" onClick={()=>Delete(todos._id)}>
                     <DeleteIcon />
                 </IconButton>
                 </div>

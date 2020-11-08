@@ -15,7 +15,7 @@ export const addLink = dbHost + "add";
 export const updateLink = dbHost + "update/";
 export const deleteLink = dbHost + "delete/";
 
-
+export const nullDate = '1970-01-01T00:00:00.000Z';
 
 
 
