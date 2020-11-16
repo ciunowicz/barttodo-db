@@ -1,6 +1,6 @@
 import React , { useState, useEffect  } from 'react';
 import { useParams} from "react-router-dom";
-import dbSave ,  { dbHost, deleteLink, nullDate } from '../Db';
+import dbSave ,  { dbHost, deleteLink, nullDate, updateLink,dbDelete } from '../Db';
 
 
 import {
@@ -16,7 +16,8 @@ import {
   import SaveIcon from '@material-ui/icons/Save';
   import DeleteIcon from '@material-ui/icons/Delete';
   import { makeStyles } from '@material-ui/core/styles';
-  import { useHistory } from 'react-router-dom';
+ // import { useHistory } from 'react-router-dom';
+//  import history from '../history';
   import Container from '@material-ui/core/Container';
   import CircularProgress from '@material-ui/core/CircularProgress';
   
@@ -65,7 +66,7 @@ import {
 
 const Edit = (props)=> {
     let { id } = useParams();
-    let history = useHistory();
+    //let history = useHistory();
     const classes = useStyles();
     const [todos,setTodos] = useState({});
     const [loading, setLoading] = useState(true);
@@ -90,62 +91,65 @@ const Edit = (props)=> {
          },[id]);
   
 
-  const Done = (idx) => {
-    
-    let todo_comp = {...todos, completed: !todos.completed}
-    let todo_db = {...todo_comp};
-    
-    setTodos(todo_comp);
-   
-    if(todo_db.end === '' )
-    { todo_db.end = nullDate; }
+  const Done = () => {
+    todos.completed = !todos.completed;
+    let Todos = {...todos};
 
-    todo_db.created = new Date(todo_db.created + ":00.000Z");
-	  todo_db.created = todo_db.created.toISOString();
-
-    dbSave(idx,todo_db);
-
+    if(todos.text.trim().length < 5) {
+      alert('Wpisz tekst więcej niż 5 znaków');
+      return;
+  }
+setTodos(Todos)
+    if(Todos.end === null || Todos.end === '')
+    {
+     
+      //Todos.end = new Date(Todos.end + ":00.000Z");
+      Todos.end = nullDate;
+    }
+    else 
+    { 
+      if(Todos.end.indexOf("Z") === -1)
+	       Todos.end = Todos.end + ":00.000Z"; 
+    }
     
+    if(Todos.created.indexOf("Z") === -1)
+	       Todos.created = Todos.created + ":00.000Z";
+
+	  dbSave(Todos, updateLink + id);
   }
 
 
   function Save() {
-    let newTodos = {...todos};
+    let Todos = {...todos};
 
     if(todos.text.trim().length < 5) {
       alert('Wpisz tekst więcej niż 5 znaków');
       return;
   }
 
-    if(todos.end !== null && todos.end !== '')
+    if(Todos.end === null || Todos.end === '')
     {
-      newTodos.end = new Date(newTodos.end + ":00.000Z");
-      newTodos.end = newTodos.end.toISOString();
+      Todos.end = nullDate;
     }
     else 
     { 
-      newTodos.end = nullDate; }
-    
-  //  return
-     
-	  newTodos.created = new Date(newTodos.created + ":00.000Z");
-	  newTodos.created = newTodos.created.toISOString();
-
-	  dbSave(id,newTodos);
-     history.push('/');
+      if(Todos.end.indexOf("Z") === -1)
+         Todos.end = Todos.end + ":00.000Z"; 
+     }
+  
+  if(Todos.created.indexOf("Z") === -1)
+  Todos.created = Todos.created + ":00.000Z";
+  
+	  dbSave(Todos,  updateLink + id);
+    //  history.push('/');
+   window.location.href = "/"
     
   
   }
 
 const Delete = (id) => {
 
-fetch(deleteLink + id)
-.then(response => {
-  return response.json();
-})
-
-        history.push('/');
-
+  dbDelete(deleteLink + id);
 }
 
   const handleText = event => {
@@ -191,7 +195,7 @@ else {
           <CardActions disableSpacing >
             <div className={classes.cardActions}>
               <div style={{display: 'flex'}}>
-                <IconButton aria-label="done" onClick={()=>Done(todos._id)}>
+                <IconButton aria-label="done" onClick={Done}>
                       <CheckCircleOutlineIcon />
                 </IconButton>
   
@@ -199,7 +203,7 @@ else {
                      <SaveIcon />
                 </IconButton>
   
-                <IconButton aria-label="delete" onClick={()=>Delete(todos._id)}>
+                <IconButton aria-label="delete" onClick={()=>Delete(id)}>
                     <DeleteIcon />
                 </IconButton>
                 </div>

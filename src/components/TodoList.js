@@ -1,5 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import { useHistory } from 'react-router-dom';
+//import { useHistory } from 'react-router-dom';
+
+
+// import history from '../history';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -36,19 +39,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function TodoList() {
+const TodoList = () => {
   const classes = useStyles();
   const [todos,setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
-  let history = useHistory();
+  //let history = useHistory();
 
   const edit = (id) => {
-    history.push("/edit/"+id);
+  //  history.push("/edit/"+id);
+    window.location.href = "/edit/"+id;
   }
 
   useEffect(() => {
-
-fetch(dbHost)
+console.log("fetch data")
+fetch(dbHost, {cache: 'no-cache'})
 .then(response => response.json())
 .then(data => { 
   let dataNull = nullDate.slice(0,16);
@@ -62,6 +66,8 @@ fetch(dbHost)
     if(data[i].end === dataNull) { data[i].end = "" }
   }
   setTodos(data); setLoading(false); });
+  // setTimeout( () =>{  window.location.reload(false)},60*4*1000);
+  
 
     },[]);
 
@@ -97,3 +103,5 @@ else {
   );
           }
 }
+
+export default TodoList;

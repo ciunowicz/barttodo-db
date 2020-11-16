@@ -1,7 +1,8 @@
 import React , { useState, useEffect  } from 'react';
-import { useHistory } from 'react-router-dom';
+//import { useHistory } from 'react-router-dom';
 // import data from '../Data';
-import {dbInsert, nullDate} from '../Db';
+// import history from '../history';
+import dbSave, {nullDate, addLink} from '../Db';
 
 import {
     Card,
@@ -56,7 +57,7 @@ import {
 const Create = ()=> {
    
     const classes = useStyles();
-    let history = useHistory();
+   // let history = useHistory();
     const [text, setText] = useState('');
     const [datetime_end, setDatetime_end] = useState('');
     
@@ -71,48 +72,58 @@ const Create = ()=> {
     
     const date_end = tomorrow.getFullYear()+'-'+((tomorrow.getMonth()+1)<10 ? ('0' + (tomorrow.getMonth()+1)) : (tomorrow.getMonth()+1)) +'-'+ (tomorrow.getDate()<10 ? ('0' + tomorrow.getDate()) : (tomorrow.getDate()));
     const time_end = (tomorrow.getHours() < 10 ? ('0' + tomorrow.getHours()) : tomorrow.getHours()) + ":" + (tomorrow.getMinutes()<10 ? ('0' + tomorrow.getMinutes()): tomorrow.getMinutes());
-    const datetime2 = date_end + 'T' + time_end;
+    // const datetime2 = date_end + 'T' + time_end;
   
 
-   
+/*     function reloadIt() {
+      if (window.location.href.substr(-2) !== "?r") {
+          window.location = window.location.href + "?r";
+      }
+  }  */  
 
 
-async function Save() {
+function Save() {
   
   if(text.trim().length < 5) {
     alert('Wpisz tekst więcej niż 5 znaków');
     return;
 }
 
-   /*  const response = await fetch(maxLink);
-    const todo = await response.json();
-    let idx = 0;
-    
-    if( todo.length > 0 ) { idx = todo[0].id; }
-    const maxId = idx + 1; */
-    let data_ez;
+  
+let data_save_created = datetime + ":00.000Z";
+let date_save_end = datetime_end;
 
-    if(datetime_end === null || datetime_end === '')
+    if(date_save_end === null || date_save_end === '')
     {
-        data_ez = nullDate;
+      date_save_end = nullDate;
     }
     else {
-        const data_e = new Date(datetime_end + ":00.000Z");
-              data_ez = data_e.toISOString();
+
+      if(date_save_end.indexOf("Z") === -1)
+        date_save_end = date_save_end + ":00.000Z";
   }
 
-    const data_c = new Date(datetime + ":00.000Z");
-    const data_cz = data_c.toISOString();
-
-
-    const rec = {text: text, created: data_cz, end: data_ez, completed: false};
-
-    dbInsert(rec);
-
-        history.push('/');
+   
+    let rec = {text: '', created: '', end: '', completed: false};
+    rec.text = text;
+    rec.created = data_save_created;
+    rec.end =  date_save_end;
+    
+    dbSave(rec,addLink);
+    // history.push('/');
+   /*  function sleep (time) {
+      return new Promise((resolve) => setTimeout(resolve, time));
+    } */
+    
+    // Usage!
+ /*    sleep(500).then(() => {
+        // Do something after the sleep!
+        window.location.href = "/";
+    }); */
+   
   
   }
-
+  
   const handleText = event => {
      setText(event.target.value);
   }
@@ -122,9 +133,9 @@ async function Save() {
   }
 
   useEffect(() => {
-
+    // setTimeout(reloadIt, 1000);
     setDatetime_end("");
-  },[datetime2])
+  },[])
 
 
       return <Container className={classes.container} maxWidth="sm" > 
@@ -174,4 +185,5 @@ async function Save() {
 </Container>;
 }
 
+// export default withRouter(Create);
 export default Create;
