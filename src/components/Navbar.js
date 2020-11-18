@@ -33,7 +33,7 @@ function NavBar(props) {
       <div className={classes.root}>
       <AppBar color="primary" position="static" >
       <Toolbar>
-        <TypoGraphy  color="inherit" variant="title">
+        <TypoGraphy  color="inherit" variant="h6">
         Bart todo
         </TypoGraphy>              
            

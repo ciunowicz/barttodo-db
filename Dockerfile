@@ -12,6 +12,7 @@ COPY package.json ./
 COPY package-lock.json ./
 RUN npm install
 RUN npm install @material-ui/icons
+RUN npm install @material-ui/lab
 
 # add app
 COPY . ./
