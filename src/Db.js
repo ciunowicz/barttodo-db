@@ -21,6 +21,24 @@ export const nullDate = '1970-01-01T00:00:00.000Z';
 
 // let num = Math.floor(Math.random() * 1000001);  
 
+export const getdbDesc = async () => {
+let dataDesc;
+
+    const response = await fetch(dbHost + 'desc', {cache: 'no-cache'});
+  
+    try {
+        const data = await response.json();
+       
+        dataDesc = data;
+        } catch (err) {
+          throw err;
+    }
+
+
+    return dataDesc;
+
+}
+
 const dbSave = async  (todo,link) => {
 
   const settings = {
@@ -40,7 +58,7 @@ const dbSave = async  (todo,link) => {
     try {
         const data = await response.json();
         // return data;
-        window.location.href = "/";
+        setTimeout( () =>{  window.location.href = "/" },500);
         } catch (err) {
           throw err;
     }

@@ -2,7 +2,7 @@ import React , { useState, useEffect  } from 'react';
 //import { useHistory } from 'react-router-dom';
 // import data from '../Data';
 // import history from '../history';
-import dbSave, {nullDate, addLink} from '../Db';
+import dbSave, {nullDate, addLink, getdbDesc} from '../Db';
 
 import {
     Card,
@@ -17,6 +17,10 @@ import {
   import { makeStyles } from '@material-ui/core/styles';
   import Container from '@material-ui/core/Container';
   import Typography from '@material-ui/core/Typography';
+  import Select from '@material-ui/core/Select';
+  import MenuItem from '@material-ui/core/MenuItem';
+  import InputLabel from '@material-ui/core/InputLabel';
+  import FormControl from '@material-ui/core/FormControl';
 
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -33,6 +37,23 @@ import {
       marginRight: theme.spacing(1), 
       width: '95%', 
       display: 'flex',
+    },
+    
+    
+    divForm: {
+      marginLeft: theme.spacing(3),
+      marginRight: theme.spacing(3),
+      display: 'flex',
+    },
+    formControl: {
+      // marginLeft: 'auto',
+      minWidth: 200,
+    },
+    textFieldName: {
+     /*  marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1),  */
+      display: 'flex',
+      width: 200,
     },
     textFieldDate: {
       marginLeft: theme.spacing(1),
@@ -53,12 +74,13 @@ import {
     },
   }));
 
-
 const Create = ()=> {
    
     const classes = useStyles();
    // let history = useHistory();
     const [text, setText] = useState('');
+    const [desc, setDesc] = useState([]);
+    const [desc_id, setDesc_id] = useState('')
     const [datetime_end, setDatetime_end] = useState('');
     
     let today = new Date();
@@ -80,6 +102,14 @@ const Create = ()=> {
           window.location = window.location.href + "?r";
       }
   }  */  
+
+
+function SaveNoteGroup() {
+
+  alert("save group note")
+
+}
+
 
 
 function Save() {
@@ -134,7 +164,11 @@ let date_save_end = datetime_end;
 
   useEffect(() => {
     // setTimeout(reloadIt, 1000);
-    setDatetime_end("");
+
+    getdbDesc().then((data) => { setDesc(data); setDesc_id(data[0]._id) }).catch(reason => console.log(reason.message))
+    
+      setDatetime_end("");
+   
   },[])
 
 
@@ -158,7 +192,40 @@ let date_save_end = datetime_end;
                       />
    
             </CardContent>
-                   
+            <div className={classes.divForm}>
+         
+           
+            <TextField
+            className={classes.textFieldName}
+              id="standard-helperText"
+              label="add Name"
+              defaultValue=""
+              helperText="note group name"
+        />
+        <IconButton style={{marginLeft: 'auto' }} aria-label="save" onClick={SaveNoteGroup}> 
+                     <SaveIcon />
+                </IconButton>
+</div>
+<div className={classes.divForm}>
+            <FormControl    className={classes.formControl}>
+            <InputLabel id="demo-simple-select-helper" >Name</InputLabel>
+              <Select
+                  labelId="demo-simple-select-helper-label"
+                  id="demo-simple-select-helper"
+                  value={desc_id}
+                  >
+            
+                  {desc.map((name) => (
+                    <MenuItem key={name._id} value={name._id} 
+                    // style={getStyles(name, personName, theme)}
+                    >
+                      {name.text}
+                    </MenuItem>
+                  ))}
+               </Select>
+            </FormControl>     
+            </div>
+            
           <CardActions disableSpacing style={{display: 'flex',justifyContent: 'space-between'}}>
                
   
@@ -178,8 +245,16 @@ let date_save_end = datetime_end;
                   shrink: true,
                   }}
                 />
+
+
           </CardActions>
+
+ 
     </Card>
+
+    
+
+
   </Grid>
   </Grid>  
 </Container>;
