@@ -1,6 +1,6 @@
 import React , { useState, useEffect  } from 'react';
 import { useParams} from "react-router-dom";
-import dbSave ,  { dbHost, deleteLink, nullDate, updateLink,dbDelete } from '../Db';
+import dbSave ,  { dbHost, deleteLink, nullDate, updateLink,dbDelete, getdbDesc } from '../Db';
 
 
 import {
@@ -20,6 +20,11 @@ import {
 //  import history from '../history';
   import Container from '@material-ui/core/Container';
   import CircularProgress from '@material-ui/core/CircularProgress';
+  import Select from '@material-ui/core/Select';
+  import MenuItem from '@material-ui/core/MenuItem';
+  import InputLabel from '@material-ui/core/InputLabel';
+  import FormControl from '@material-ui/core/FormControl';
+
   
 
   const useStyles = makeStyles((theme) => ({
@@ -43,6 +48,15 @@ import {
       marginRight: theme.spacing(1), 
       display: 'flex',
       width: 190,
+    },
+    divForm: {
+      marginLeft: theme.spacing(3),
+      marginRight: theme.spacing(3),
+      display: 'flex',
+    },
+    formControl: {
+      // marginLeft: 'auto',
+      minWidth: 200,
     },
      typography: {
      display: 'flex',
@@ -70,10 +84,15 @@ const Edit = (props)=> {
     const classes = useStyles();
     const [todos,setTodos] = useState({});
     const [loading, setLoading] = useState(true);
+
+    const [textDesc, setTextDesc] = useState('');
+    const [desc, setDesc] = useState([]);
+    const [desc_id, setDesc_id] = useState('')
   
 
     useEffect(() => {    
-   
+         
+
           fetch(dbHost+id)
           .then(response => response.json())
           .then(data => { let data_c = new Date(data.created); 
@@ -84,17 +103,43 @@ const Edit = (props)=> {
             let dataNull = nullDate.slice(0,16);
             data.created=data.created.slice(0,16); 
             data.end=data.end.slice(0,16); 
+            loadData(data.id_desc);
             if(data.end === dataNull) { data.end = "" }
             setTodos(data);  
             setLoading(false); });
-         
+            
+           
          },[id]);
   
+
+         const loadData  = (iddesc) => {
+          console.log("load");
+          console.log(iddesc)
+          getdbDesc().then((data) => { setDesc(data); setDesc_id(data[0]._id); 
+            for(let i=0; i< data.length; i++) 
+            {
+              if(data[i]._id === iddesc ) { setDesc_id(data[i]._id); break;}
+            }
+          
+          }).catch(reason => console.log(reason.message))
+          
+        }
+
+        const handleIdDesc = event => {
+          todos.id_desc = event.target.value;
+          let Todos = {...todos}
+          setDesc_id(event.target.value);
+         
+          console.log(todos.id_desc);
+          console.log(Todos.id_desc);
+          setTodos(Todos)
+        }
+      
 
   const Done = () => {
     todos.completed = !todos.completed;
     let Todos = {...todos};
-
+// alert(todos.id_desc)
     if(todos.text.trim().length < 5) {
       alert('Wpisz tekst więcej niż 5 znaków');
       return;
@@ -191,7 +236,27 @@ else {
                       />
    
             </CardContent>
-                   
+            <div className={classes.divForm}>
+            <FormControl    className={classes.formControl}>
+            <InputLabel id="demo-simple-select-helper" >Name</InputLabel>
+              <Select
+                  labelId="demo-simple-select-helper-label"
+                  id="demo-simple-select-helper"
+                  // defaultValue=""
+                  value={desc_id}
+                  onChange={handleIdDesc}
+                  >
+            
+                  {desc.map((name) => (
+                    <MenuItem key={name._id} value={name._id} 
+                    // style={getStyles(name, personName, theme)}
+                    >
+                      {name.text}
+                    </MenuItem>
+                  ))}
+               </Select>
+            </FormControl>     
+            </div>       
           <CardActions disableSpacing >
             <div className={classes.cardActions}>
               <div style={{display: 'flex'}}>

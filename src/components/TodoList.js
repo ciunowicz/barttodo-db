@@ -9,7 +9,12 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { dbHost, nullDate  } from '../Db';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Pagination from "@material-ui/lab/Pagination";
+
+import { dbHost, nullDate, getdbDesc,getdb  } from '../Db';
 // import data from '../Data';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,6 +41,25 @@ const useStyles = makeStyles((theme) => ({
   gridcontainer: {
     flexDirection: 'column',
   },
+  divForm: {
+    marginLeft: theme.spacing(3),
+    marginRight: theme.spacing(3),
+    display: 'flex',
+  },
+  formControl: {
+    // marginLeft: 'auto',
+    minWidth: 200,
+  },
+  pagination: {
+    marginLeft: 'auto', 
+    marginRight: 'auto', 
+  },
+  contpagination: {
+    marginTop: '20px', 
+    width: '100%', 
+    display: 'flex', 
+  },
+
 }));
 
 
@@ -43,33 +67,85 @@ const TodoList = () => {
   const classes = useStyles();
   const [todos,setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [totalPages, setTotalPages] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [page, setPage] = useState(1);
+
+ 
+    const [desc, setDesc] = useState([]);
+    const [desc_id, setDesc_id] = useState('')
   //let history = useHistory();
 
   const edit = (id) => {
   //  history.push("/edit/"+id);
     window.location.href = "/edit/"+id;
   }
+  const handleIdDesc = event => {
+    setDesc_id(event.target.value);
+    loadPages(event.target.value);
+    setPage(1);
+    
+  }
+
+  const handleChange = (event, value) => { 
+       
+    setPage(value);
+   
+}
+
+
+const loadPages = (desc) => {
+  let host;
+  if(!desc.length || desc === "A")
+    host = dbHost + 'page/' + '?p=' + page + '&l=' + pageSize;
+    else
+       host = dbHost + 'page/' + '?p=' + page + '&l=' + pageSize + '&desc=' + desc;
+
+    getdb(host).then((dt) => { 
+      
+      let data = dt.docs;
+      let  dataNull = nullDate.slice(0,16);
+      setTotalPages(dt.totalPages);
+
+      for(let i=0; i< data.length; i++)
+      {
+      let data_c = new Date(data[i].created); data[i].created = data_c.toISOString(); 
+      let data_e = new Date(data[i].end); data[i].end = data_e.toISOString();
+      
+        data[i].end=data[i].end.slice(0,16)
+        data[i].created=data[i].created.slice(0,16)
+        if(data[i].end === dataNull) { data[i].end = "" }
+      }
+
+      setTodos(data); 
+      setLoading(false); 
+    
+    });
+   
+
+}
+
+  const loadData  = (desc) => {
+    
+    getdbDesc().then((data) => { let descdata = [...data];  descdata.unshift({_id: 'A', text: 'All'});  setDesc(descdata); 
+          
+          if(!desc.length || desc === "A") {
+            setDesc_id("A");
+          }
+          else 
+            { setDesc_id(desc); }
+                                 }).catch(reason => console.log(reason.message))
+   
+  }
+
 
   useEffect(() => {
-console.log("fetch data")
-fetch(dbHost, {cache: 'no-cache'})
-.then(response => response.json())
-.then(data => { 
-  let dataNull = nullDate.slice(0,16);
-  for(let i=0; i< data.length; i++)
-  {
-  let data_c = new Date(data[i].created); data[i].created = data_c.toISOString(); 
-  let data_e = new Date(data[i].end); data[i].end = data_e.toISOString();
-  
-    data[i].end=data[i].end.slice(0,16)
-    data[i].created=data[i].created.slice(0,16)
-    if(data[i].end === dataNull) { data[i].end = "" }
-  }
-  setTodos(data); setLoading(false); });
-  // setTimeout( () =>{  window.location.reload(false)},60*4*1000);
-  
-
-    },[]);
+   loadPages(desc_id);
+      // setTimeout( () =>{  window.location.reload(false)},60*4*1000);
+      
+    loadData(desc_id);
+        },[page]);
+    
 
 if(loading) { return (<div className="circular"><CircularProgress disableShrink /></div>)
 
@@ -79,6 +155,27 @@ else {
   
   return (
     <div className={classes.root}>
+       <div className={classes.divForm}>
+            <FormControl    className={classes.formControl}>
+            {/* <InputLabel id="demo-simple-select-helper" >Name</InputLabel> */}
+              <Select
+                  labelId="demo-simple-select-helper-label"
+                  id="demo-simple-select-helper"
+                  // defaultValue=""
+                  value={desc_id}
+                  onChange={handleIdDesc}
+                  >
+            
+                  {desc.map((name) => (
+                    <MenuItem key={name._id} value={name._id} 
+                    // style={getStyles(name, personName, theme)}
+                    >
+                      {name.text}
+                    </MenuItem>
+                  ))}
+               </Select>
+            </FormControl>     
+            </div>       
       {  todos.map((item,id) => { 
           return (
                   <Paper className={classes.paper} onClick={() => edit(item._id)} key={id}>
@@ -99,6 +196,8 @@ else {
                       </Grid>
                     </Grid>
                   </Paper>)}) } 
+                  <div className={classes.contpagination} ><Pagination className={classes.pagination} count={totalPages} page={page} onChange={handleChange} /></div>
+
     </div>
   );
           }

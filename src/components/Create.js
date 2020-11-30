@@ -2,7 +2,7 @@ import React , { useState, useEffect  } from 'react';
 //import { useHistory } from 'react-router-dom';
 // import data from '../Data';
 // import history from '../history';
-import dbSave, {nullDate, addLink, getdbDesc} from '../Db';
+import dbSave, {nullDate, addLink, addNoteLink, getdbDesc, dbSaveNote} from '../Db';
 
 import {
     Card,
@@ -79,6 +79,7 @@ const Create = ()=> {
     const classes = useStyles();
    // let history = useHistory();
     const [text, setText] = useState('');
+    const [textDesc, setTextDesc] = useState('');
     const [desc, setDesc] = useState([]);
     const [desc_id, setDesc_id] = useState('')
     const [datetime_end, setDatetime_end] = useState('');
@@ -106,7 +107,13 @@ const Create = ()=> {
 
 function SaveNoteGroup() {
 
-  alert("save group note")
+  
+
+  let rec = {text: textDesc};
+  
+  dbSaveNote(rec,addNoteLink);
+
+  setTimeout( loadData ,1000);
 
 }
 
@@ -137,7 +144,9 @@ let date_save_end = datetime_end;
     let rec = {text: '', created: '', end: '', completed: false};
     rec.text = text;
     rec.created = data_save_created;
-    rec.end =  date_save_end;
+    rec.end =  date_save_end
+    rec.id_desc = desc_id;
+
     
     dbSave(rec,addLink);
     // history.push('/');
@@ -157,17 +166,31 @@ let date_save_end = datetime_end;
   const handleText = event => {
      setText(event.target.value);
   }
+
+
+  const handleTextDesc = event => {
+    setTextDesc(event.target.value);
+ }
   
   const handleData = event => {
     setDatetime_end(event.target.value);
   }
 
-  useEffect(() => {
-    // setTimeout(reloadIt, 1000);
+  const handleIdDesc = event => {
+    setDesc_id(event.target.value);
+  }
 
+  const loadData  = () => {
+    console.log("load");
     getdbDesc().then((data) => { setDesc(data); setDesc_id(data[0]._id) }).catch(reason => console.log(reason.message))
     
-      setDatetime_end("");
+    setDatetime_end("");
+  }
+
+  useEffect(() => {
+    // setTimeout(reloadIt, 1000);
+loadData();
+   
    
   },[])
 
@@ -199,8 +222,10 @@ let date_save_end = datetime_end;
             className={classes.textFieldName}
               id="standard-helperText"
               label="add Name"
-              defaultValue=""
+              // defaultValue=""
               helperText="note group name"
+              value={textDesc}
+              onChange={handleTextDesc}
         />
         <IconButton style={{marginLeft: 'auto' }} aria-label="save" onClick={SaveNoteGroup}> 
                      <SaveIcon />
@@ -212,7 +237,9 @@ let date_save_end = datetime_end;
               <Select
                   labelId="demo-simple-select-helper-label"
                   id="demo-simple-select-helper"
+                  // defaultValue=""
                   value={desc_id}
+                  onChange={handleIdDesc}
                   >
             
                   {desc.map((name) => (
