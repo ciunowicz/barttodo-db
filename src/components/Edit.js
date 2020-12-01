@@ -44,8 +44,8 @@ import {
       display: 'flex',
     },
     textFieldDate: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1), 
+     /*  marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1),  */
       display: 'flex',
       width: 190,
     },
@@ -68,6 +68,9 @@ import {
       // overflow: 'hidden',
       // padding: theme.spacing(0, 3),
       marginTop: theme.spacing(1),
+    },
+    select: {
+      marginBottom: theme.spacing(2),
     },
     cardActions: {
       display: 'flex',
@@ -243,6 +246,7 @@ else {
                   labelId="demo-simple-select-helper-label"
                   id="demo-simple-select-helper"
                   // defaultValue=""
+                  className={classes.select}
                   value={desc_id}
                   onChange={handleIdDesc}
                   >
@@ -257,21 +261,9 @@ else {
                </Select>
             </FormControl>     
             </div>       
-          <CardActions disableSpacing >
-            <div className={classes.cardActions}>
-              <div style={{display: 'flex'}}>
-                <IconButton aria-label="done" onClick={Done}>
-                      <CheckCircleOutlineIcon />
-                </IconButton>
-  
-                <IconButton aria-label="save" onClick={Save}> 
-                     <SaveIcon />
-                </IconButton>
-  
-                <IconButton aria-label="delete" onClick={()=>Delete(id)}>
-                    <DeleteIcon />
-                </IconButton>
-                </div>
+         
+            <div className={classes.divForm}>
+            <FormControl    className={classes.formControl}>
               <TextField style={{display: 'flex'}}
                   id="datetime-local"
                   label="End"
@@ -285,6 +277,23 @@ else {
                     shrink: true,
                   }}
                 />
+                </FormControl>
+                </div>
+
+
+<CardActions disableSpacing >
+            <div className={classes.cardActions}>
+                <IconButton aria-label="done" onClick={Done}>
+                      <CheckCircleOutlineIcon />
+                </IconButton>
+  
+                <IconButton aria-label="save" onClick={Save}> 
+                     <SaveIcon />
+                </IconButton>
+  
+                <IconButton aria-label="delete" onClick={()=>Delete(id)}>
+                    <DeleteIcon />
+                </IconButton>
                 </div>
           </CardActions>
     </Card>

@@ -42,13 +42,15 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
   },
   divForm: {
+    paddingTop: theme.spacing(1),
     marginLeft: theme.spacing(3),
     marginRight: theme.spacing(3),
     display: 'flex',
   },
   formControl: {
-    // marginLeft: 'auto',
     minWidth: 200,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   pagination: {
     marginLeft: 'auto', 

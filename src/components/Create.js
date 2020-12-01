@@ -14,6 +14,7 @@ import {
   import {Grid} from '@material-ui/core';
   import TextField from '@material-ui/core/TextField';
   import SaveIcon from '@material-ui/icons/Save';
+  import AddIcon from '@material-ui/icons/Add';
   import { makeStyles } from '@material-ui/core/styles';
   import Container from '@material-ui/core/Container';
   import Typography from '@material-ui/core/Typography';
@@ -39,10 +40,13 @@ import {
       display: 'flex',
     },
     
-    
+    select: {
+      marginBottom: theme.spacing(2),
+    },
     divForm: {
       marginLeft: theme.spacing(3),
       marginRight: theme.spacing(3),
+     
       display: 'flex',
     },
     formControl: {
@@ -56,8 +60,8 @@ import {
       width: 200,
     },
     textFieldDate: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1), 
+      /* marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1),  */
       display: 'flex',
       width: 190,
     },
@@ -71,6 +75,10 @@ import {
       // overflow: 'hidden',
       // padding: theme.spacing(0, 3),
       marginTop: theme.spacing(1),
+    },
+    button: {
+      marginLeft: 'auto',
+      display: 'flex',
     },
   }));
 
@@ -105,16 +113,9 @@ const Create = ()=> {
   }  */  
 
 
-function SaveNoteGroup() {
+function NoteGroup() {
 
-  
-
-  let rec = {text: textDesc};
-  
-  dbSaveNote(rec,addNoteLink);
-
-  setTimeout( loadData ,1000);
-
+  window.location.href = "/editd"
 }
 
 
@@ -181,7 +182,7 @@ let date_save_end = datetime_end;
   }
 
   const loadData  = () => {
-    console.log("load");
+    
     getdbDesc().then((data) => { setDesc(data); setDesc_id(data[0]._id) }).catch(reason => console.log(reason.message))
     
     setDatetime_end("");
@@ -215,22 +216,7 @@ loadData();
                       />
    
             </CardContent>
-            <div className={classes.divForm}>
-         
-           
-            <TextField
-            className={classes.textFieldName}
-              id="standard-helperText"
-              label="add Name"
-              // defaultValue=""
-              helperText="note group name"
-              value={textDesc}
-              onChange={handleTextDesc}
-        />
-        <IconButton style={{marginLeft: 'auto' }} aria-label="save" onClick={SaveNoteGroup}> 
-                     <SaveIcon />
-                </IconButton>
-</div>
+
 <div className={classes.divForm}>
             <FormControl    className={classes.formControl}>
             <InputLabel id="demo-simple-select-helper" >Name</InputLabel>
@@ -238,29 +224,26 @@ loadData();
                   labelId="demo-simple-select-helper-label"
                   id="demo-simple-select-helper"
                   // defaultValue=""
+                  className={classes.select}
                   value={desc_id}
                   onChange={handleIdDesc}
                   >
             
                   {desc.map((name) => (
-                    <MenuItem key={name._id} value={name._id} 
-                    // style={getStyles(name, personName, theme)}
-                    >
+                    <MenuItem key={name._id} value={name._id} >
                       {name.text}
                     </MenuItem>
                   ))}
                </Select>
-            </FormControl>     
+            </FormControl>  
+            <IconButton className={classes.button} aria-label="add" onClick={NoteGroup}> 
+                     <AddIcon />
+                </IconButton>   
             </div>
             
-          <CardActions disableSpacing style={{display: 'flex',justifyContent: 'space-between'}}>
-               
-  
-                <IconButton aria-label="save" onClick={Save}> 
-                     <SaveIcon />
-                </IconButton>
-  
-                    
+          {/* <CardActions disableSpacing style={{display: 'flex',justifyContent: 'space-between'}}> */}
+          <div className={classes.divForm}>
+            <FormControl    className={classes.formControl}>                   
               <TextField  className={classes.textFieldDate}
                   id="datetime-local"
                   label="End"
@@ -272,11 +255,17 @@ loadData();
                   shrink: true,
                   }}
                 />
+</FormControl> 
 
-
+          </div>
+          <CardActions disableSpacing >
+            <div className={classes.cardActions}>
+            <IconButton className={classes.button} aria-label="save" onClick={Save}> 
+                     <SaveIcon />
+                </IconButton>
+                </div>
           </CardActions>
-
- 
+  
     </Card>
 
     

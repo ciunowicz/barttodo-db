@@ -8,6 +8,7 @@ import './List.css';
 import Create from './components/Create';
 import Edit from './components/Edit';
 import NavBar from './components/Navbar';
+import EditGroup from './components/EditGroup';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
          <Switch>
          <Route exact path='/' component={TodoList}/>
          <Route path='/add' component={Create} />
+         <Route path='/editd' component={EditGroup} />
          <Route path='/edit/:id' component={Edit} />
          </Switch>
        </Router>
