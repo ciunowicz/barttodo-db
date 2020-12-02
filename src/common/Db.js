@@ -18,6 +18,7 @@ export const addNoteLink = dbHost + "adddesc";
 
 export const updateLink = dbHost + "update/";
 export const deleteLink = dbHost + "delete/";
+export const deleteGroupLink = dbHost + "deletede/";
 
 export const nullDate = '1970-01-01T00:00:00.000Z';
 
@@ -117,20 +118,22 @@ const dbSave = async  (todo,link) => {
    
      }
 
-   export const dbDelete = async  (link) => {
+   export const dbDelete = async  (link, redir=true) => {
 
   
     const response = await fetch(link);
+
   
       try {
           const data = await response.json();
-          setTimeout( () =>{  window.location.href = "/" },500);
-          
+         
           } catch (err) {
             throw err;
       }
   
-   
+      if(response.status === 400) alert("Cannot delete")
+
+      if(redir) setTimeout( () =>{  window.location.href = "/" },500);
      }
 
 

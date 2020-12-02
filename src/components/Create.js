@@ -2,8 +2,8 @@ import React , { useState, useEffect  } from 'react';
 //import { useHistory } from 'react-router-dom';
 // import data from '../Data';
 // import history from '../history';
-import dbSave, {nullDate, addLink, addNoteLink, getdbDesc, dbSaveNote} from '../Db';
-
+import dbSave, {nullDate, addLink, addNoteLink, getdbDesc, dbSaveNote} from '../common/Db';
+import useStyles from '../common/styles';
 import {
     Card,
     CardContent,
@@ -15,7 +15,6 @@ import {
   import TextField from '@material-ui/core/TextField';
   import SaveIcon from '@material-ui/icons/Save';
   import AddIcon from '@material-ui/icons/Add';
-  import { makeStyles } from '@material-ui/core/styles';
   import Container from '@material-ui/core/Container';
   import Typography from '@material-ui/core/Typography';
   import Select from '@material-ui/core/Select';
@@ -23,64 +22,7 @@ import {
   import InputLabel from '@material-ui/core/InputLabel';
   import FormControl from '@material-ui/core/FormControl';
 
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      backgroundColor: '#FAFAFA',
-      minWidth: 375,
-      paddingBottom: 8,
-        [theme.breakpoints.down('md')]: {
-          minWidth: 320,
-        },
-    },
-   
-    textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1), 
-      width: '95%', 
-      display: 'flex',
-    },
-    
-    select: {
-      marginBottom: theme.spacing(2),
-    },
-    divForm: {
-      marginLeft: theme.spacing(3),
-      marginRight: theme.spacing(3),
-     
-      display: 'flex',
-    },
-    formControl: {
-      // marginLeft: 'auto',
-      minWidth: 200,
-    },
-    textFieldName: {
-     /*  marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),  */
-      display: 'flex',
-      width: 200,
-    },
-    textFieldDate: {
-      /* marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),  */
-      display: 'flex',
-      width: 190,
-    },
-    typography: {
-      display: 'flex',
-     justifyContent: 'flex-end',
-     paddingBottom: 8,
-    },
-    container: {
-      flexGrow: 1,
-      // overflow: 'hidden',
-      // padding: theme.spacing(0, 3),
-      marginTop: theme.spacing(1),
-    },
-    button: {
-      marginLeft: 'auto',
-      display: 'flex',
-    },
-  }));
+  
 
 const Create = ()=> {
    

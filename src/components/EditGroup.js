@@ -2,8 +2,8 @@ import React , { useState, useEffect  } from 'react';
 //import { useHistory } from 'react-router-dom';
 // import data from '../Data';
 // import history from '../history';
-import dbSave, {nullDate, addLink, addNoteLink, getdbDesc, dbSaveNote} from '../Db';
-
+import dbSave, {nullDate, addLink, addNoteLink, getdbDesc, dbSaveNote, dbDelete, deleteGroupLink} from '../common/Db';
+import useStyles from '../common/styles';
 import {
     Card,
     CardContent,
@@ -14,75 +14,14 @@ import {
   import {Grid} from '@material-ui/core';
   import TextField from '@material-ui/core/TextField';
   import SaveIcon from '@material-ui/icons/Save';
-  import { makeStyles } from '@material-ui/core/styles';
   import Container from '@material-ui/core/Container';
-  import Typography from '@material-ui/core/Typography';
   import DeleteIcon from '@material-ui/icons/Delete';
   import Select from '@material-ui/core/Select';
   import MenuItem from '@material-ui/core/MenuItem';
   import InputLabel from '@material-ui/core/InputLabel';
   import FormControl from '@material-ui/core/FormControl';
 
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      backgroundColor: '#FAFAFA',
-      minWidth: 375,
-      paddingBottom: 8,
-        [theme.breakpoints.down('md')]: {
-          minWidth: 320,
-        },
-    },
-   
-    textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1), 
-      width: '95%', 
-      display: 'flex',
-    },
-    
-    
-    divForm: {
-      marginTop: theme.spacing(2),
-     
-      marginLeft: theme.spacing(3),
-      marginRight: theme.spacing(3),
-      display: 'flex',
-    },
-   
-    formControl: {
-      // marginLeft: 'auto',
-      minWidth: 200,
-    },
-    textFieldName: {
-     /*  marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),  */
-      display: 'flex',
-      width: 200,
-    },
-    textFieldDate: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1), 
-      display: 'flex',
-      width: 190,
-    },
-    typography: {
-      display: 'flex',
-     justifyContent: 'flex-end',
-     paddingBottom: 8,
-    },
-    container: {
-      flexGrow: 1,
-      // overflow: 'hidden',
-      // padding: theme.spacing(0, 3),
-      marginTop: theme.spacing(1),
-    },
-    cardActions: {
-      display: 'flex',
-      [theme.breakpoints.down('md')]: {
-        flexDirection: 'column-reverse',
-    },
-    },
-  }));
+  
 
 const EditGroup = ()=> {
    
@@ -99,6 +38,7 @@ const EditGroup = ()=> {
    }
 
    const handleIdDesc = event => {
+     console.log(event.target)
     setDesc_id(event.target.value);
   }
    const loadData  = () => {
@@ -107,7 +47,11 @@ const EditGroup = ()=> {
   }
 
   const Delete = () => {
-
+    if( window.confirm("Delete selected note group?") ) {
+      dbDelete(deleteGroupLink + desc_id,false);
+     
+      setTimeout(loadData ,1500);
+    }
   }
 
   function SaveNoteGroup() {
@@ -140,6 +84,7 @@ loadData();
           <Card  className={classes.root}> 
           {/* zamienić div na typography */}
           <div className={classes.divForm}>
+          <FormControl    className={classes.formControl}>
           <TextField
             className={classes.textFieldName}
               id="standard-helperText"
@@ -151,9 +96,10 @@ loadData();
               value={textDesc}
               onChange={handleTextDesc}
         />
+        </FormControl>
         </div>
 
-        <div className={classes.divForm} >
+        <div className={classes.divForm} style={{paddingTop: '10px'}}>
             <FormControl    className={classes.formControl}>
             <InputLabel id="demo-simple-select-helper" >Name</InputLabel>
               <Select

@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 //import { useHistory } from 'react-router-dom';
 
-
 // import history from '../history';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
@@ -14,7 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Pagination from "@material-ui/lab/Pagination";
 
-import { dbHost, nullDate, getdbDesc,getdb  } from '../Db';
+import { dbHost, nullDate, getdbDesc,getdb  } from '../common/Db';
 // import data from '../Data';
 
 const useStyles = makeStyles((theme) => ({

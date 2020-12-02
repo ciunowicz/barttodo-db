@@ -1,6 +1,7 @@
 import React , { useState, useEffect  } from 'react';
 import { useParams} from "react-router-dom";
-import dbSave ,  { dbHost, deleteLink, nullDate, updateLink,dbDelete, getdbDesc } from '../Db';
+import dbSave ,  { dbHost, deleteLink, nullDate, updateLink,dbDelete, getdbDesc } from '../common/Db';
+import useStyles from '../common/styles';
 
 
 import {
@@ -15,7 +16,6 @@ import {
   import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
   import SaveIcon from '@material-ui/icons/Save';
   import DeleteIcon from '@material-ui/icons/Delete';
-  import { makeStyles } from '@material-ui/core/styles';
  // import { useHistory } from 'react-router-dom';
 //  import history from '../history';
   import Container from '@material-ui/core/Container';
@@ -26,59 +26,6 @@ import {
   import FormControl from '@material-ui/core/FormControl';
 
   
-
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      backgroundColor: '#FAFAFA',
-      minWidth: 375,
-      paddingBottom: 8,
-      [theme.breakpoints.down('md')]: {
-        minWidth: 320,
-    },
-    },
-   
-    textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1), 
-      width: '95%', 
-      display: 'flex',
-    },
-    textFieldDate: {
-     /*  marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),  */
-      display: 'flex',
-      width: 190,
-    },
-    divForm: {
-      marginLeft: theme.spacing(3),
-      marginRight: theme.spacing(3),
-      display: 'flex',
-    },
-    formControl: {
-      // marginLeft: 'auto',
-      minWidth: 200,
-    },
-     typography: {
-     display: 'flex',
-     justifyContent: 'flex-end',
-     paddingBottom: 8,
-    },
-    container: {
-      flexGrow: 1,
-      // overflow: 'hidden',
-      // padding: theme.spacing(0, 3),
-      marginTop: theme.spacing(1),
-    },
-    select: {
-      marginBottom: theme.spacing(2),
-    },
-    cardActions: {
-      display: 'flex',
-      [theme.breakpoints.down('md')]: {
-        flexDirection: 'column-reverse',
-    },
-    },
-  }));
 
 
 const Edit = (props)=> {
