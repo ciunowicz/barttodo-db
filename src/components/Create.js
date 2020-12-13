@@ -2,7 +2,7 @@ import React , { useState, useEffect  } from 'react';
 //import { useHistory } from 'react-router-dom';
 // import data from '../Data';
 // import history from '../history';
-import dbSave, {nullDate, addLink, addNoteLink, getdbDesc, dbSaveNote} from '../common/Db';
+import dbSave, {nullDate, addLink, getdbDesc} from '../common/Db';
 import useStyles from '../common/styles';
 import {
     Card,
@@ -29,7 +29,6 @@ const Create = ()=> {
     const classes = useStyles();
    // let history = useHistory();
     const [text, setText] = useState('');
-    const [textDesc, setTextDesc] = useState('');
     const [desc, setDesc] = useState([]);
     const [desc_id, setDesc_id] = useState('')
     const [datetime_end, setDatetime_end] = useState('');
@@ -43,11 +42,7 @@ const Create = ()=> {
     let tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     
-    const date_end = tomorrow.getFullYear()+'-'+((tomorrow.getMonth()+1)<10 ? ('0' + (tomorrow.getMonth()+1)) : (tomorrow.getMonth()+1)) +'-'+ (tomorrow.getDate()<10 ? ('0' + tomorrow.getDate()) : (tomorrow.getDate()));
-    const time_end = (tomorrow.getHours() < 10 ? ('0' + tomorrow.getHours()) : tomorrow.getHours()) + ":" + (tomorrow.getMinutes()<10 ? ('0' + tomorrow.getMinutes()): tomorrow.getMinutes());
-    // const datetime2 = date_end + 'T' + time_end;
-  
-
+    
 /*     function reloadIt() {
       if (window.location.href.substr(-2) !== "?r") {
           window.location = window.location.href + "?r";
@@ -67,6 +62,13 @@ function Save() {
   if(text.trim().length < 5) {
     alert('Wpisz tekst więcej niż 5 znaków');
     return;
+}
+
+
+if(desc_id === null || desc_id === '')
+{
+  alert('Dodaj grupę notatek');
+  return;
 }
 
   
@@ -110,10 +112,6 @@ let date_save_end = datetime_end;
      setText(event.target.value);
   }
 
-
-  const handleTextDesc = event => {
-    setTextDesc(event.target.value);
- }
   
   const handleData = event => {
     setDatetime_end(event.target.value);
@@ -150,7 +148,7 @@ loadData();
                         id="outlined-multiline-static"   
                         label="Note"
                         multiline
-                        rows={4}
+                        rows={8}
                         // defaultValue="Bobek Kartofelek"
                         variant="outlined"
                         className={classes.textField}

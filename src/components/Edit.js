@@ -35,7 +35,6 @@ const Edit = (props)=> {
     const [todos,setTodos] = useState({});
     const [loading, setLoading] = useState(true);
 
-    const [textDesc, setTextDesc] = useState('');
     const [desc, setDesc] = useState([]);
     const [desc_id, setDesc_id] = useState('')
   
@@ -78,11 +77,9 @@ const Edit = (props)=> {
         const handleIdDesc = event => {
           todos.id_desc = event.target.value;
           let Todos = {...todos}
+          setDesc_id(event.target.value);  
           setDesc_id(event.target.value);
-         
-          console.log(todos.id_desc);
-          console.log(Todos.id_desc);
-          setTodos(Todos)
+           setTodos(Todos)
         }
       
 
@@ -116,6 +113,8 @@ setTodos(Todos)
 
   function Save() {
     let Todos = {...todos};
+    Todos.id_desc = desc_id;
+    
 
     if(todos.text.trim().length < 5) {
       alert('Wpisz tekst więcej niż 5 znaków');
@@ -176,7 +175,7 @@ else {
                         id="outlined-multiline-static"   
                         label="Note"
                         multiline
-                        rows={4}
+                        rows={8}
                         name="text"
                         //defaultValue=""
                         value={todos.text || "Loading"}

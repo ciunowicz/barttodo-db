@@ -17,8 +17,6 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex',
     },
     textFieldDate: {
-     /*  marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),  */
       display: 'flex',
       width: 190,
     },
@@ -28,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex',
     },
     formControl: {
-      // marginLeft: 'auto',
       minWidth: 200,
     },
      typography: {
@@ -36,30 +33,49 @@ const useStyles = makeStyles((theme) => ({
      justifyContent: 'flex-end',
      paddingBottom: 8,
     },
-    container: {
-      flexGrow: 1,
-      // overflow: 'hidden',
-      // padding: theme.spacing(0, 3),
-      marginTop: theme.spacing(1),
+    typographyList: {
+    whiteSpace: 'pre-line',
     },
     select: {
       marginBottom: theme.spacing(2),
     },
     container: {
       flexGrow: 1,
-      // overflow: 'hidden',
-      // padding: theme.spacing(0, 3),
       marginTop: theme.spacing(1),
     },
     button: {
       marginLeft: 'auto',
       display: 'flex',
     },
-    cardActions: {
-      display: 'flex',
-      [theme.breakpoints.down('md')]: {
-        flexDirection: 'column-reverse',
+    list: {
+      flexGrow: 1,
+      overflow: 'hidden',
+      padding: theme.spacing(0, 3),
     },
+    paper: {
+      maxWidth: 400,
+      margin: `${theme.spacing(1)}px auto`,
+      padding: theme.spacing(2),
+      display: 'flex',
+      flexDirection: 'row-reverse',
+      cursor: 'pointer',
+    },
+    grid: {
+      paddingBottom: 0,
+      marginBottom: 0, 
+      
+    },
+    gridcontainer: {
+      flexDirection: 'column',
+    },
+    pagination: {
+      marginLeft: 'auto', 
+      marginRight: 'auto', 
+    },
+    contpagination: {
+      marginTop: '20px', 
+      width: '100%', 
+      display: 'flex', 
     },
   }));
 

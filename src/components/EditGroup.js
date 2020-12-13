@@ -2,11 +2,10 @@ import React , { useState, useEffect  } from 'react';
 //import { useHistory } from 'react-router-dom';
 // import data from '../Data';
 // import history from '../history';
-import dbSave, {nullDate, addLink, addNoteLink, getdbDesc, dbSaveNote, dbDelete, deleteGroupLink} from '../common/Db';
+import { addNoteLink, getdbDesc, dbSaveNote, dbDelete, deleteGroupLink} from '../common/Db';
 import useStyles from '../common/styles';
 import {
     Card,
-    CardContent,
     CardActions,
     IconButton
   } from '@material-ui/core';

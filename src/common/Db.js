@@ -81,8 +81,9 @@ const dbSave = async  (todo,link) => {
 
     try {
         const data = await response.json();
-        // return data;
+       
         setTimeout( () =>{  window.location.href = "/" },500);
+        return data;
         } catch (err) {
           throw err;
     }
@@ -109,7 +110,7 @@ const dbSave = async  (todo,link) => {
   
       try {
           const data = await response.json();
-          // return data;
+          return data;
           // setTimeout( () =>{  window.location.href = "/" },500);
           } catch (err) {
             throw err;
@@ -126,7 +127,7 @@ const dbSave = async  (todo,link) => {
   
       try {
           const data = await response.json();
-         
+          // return data;
           } catch (err) {
             throw err;
       }
