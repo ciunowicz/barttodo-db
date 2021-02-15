@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
     root: {
       backgroundColor: '#FAFAFA',
-      minWidth: 375,
+      minWidth: 460,
       paddingBottom: 8,
       [theme.breakpoints.down('md')]: {
         minWidth: 320,
@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
     },
     typographyList: {
     whiteSpace: 'pre-line',
+    [theme.breakpoints.down('md')]: {
+      fontSize: 14,
+  },
     },
     select: {
       marginBottom: theme.spacing(2),

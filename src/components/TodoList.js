@@ -38,6 +38,7 @@ const TodoList = () => {
   const handleIdDesc = event => {
     setDesc_id(event.target.value);
     // loadPages(event.target.value);
+    saveLoc(event.target.value)
     setPage(1);
     
   }
@@ -48,7 +49,32 @@ const TodoList = () => {
    
 }
 
+function saveLoc(id){
 
+  let data = { iddesc: id };
+  
+  if (typeof(Storage) !== "undefined") 
+  {
+      localStorage.setItem("BartTodo", JSON.stringify(data));
+  }
+  else  { 
+          alert("Your browser does not support localStorage");
+        }
+}
+
+function loadLoc() {
+  let todosData;
+
+  if (typeof(Storage) !== "undefined") {
+   
+    if (localStorage.getItem("BartTodo")) {
+        todosData = JSON.parse(localStorage.getItem("BartTodo"));
+    } 
+    
+  } 
+
+  return  todosData;
+}
 
   const loadData2 = React.useCallback( (desc) => {
     let host = dbHost + `page/?p=${page}&l=${pageSize}`;
@@ -74,7 +100,7 @@ const TodoList = () => {
 
           let stringArray = data[i].text.split(/(\s+)/);
           
-          const CHARNUM = 35;
+          const CHARNUM = 40;
          
           for(let j=0; j< stringArray.length; j++) {
              
@@ -106,7 +132,17 @@ const TodoList = () => {
   }, [page]);
   
   useEffect(() => {
-    loadData2(desc_id);
+
+    let id = desc_id;
+
+    if(id === "") {
+      let idLoc =  loadLoc();
+
+      if(idLoc !== undefined) { id = idLoc.iddesc;  } else { id = "A";  }
+    }
+  
+    loadData2(id);
+    //console.log("Use effect");
   }, [desc_id, loadData2]); 
 
 
@@ -158,7 +194,9 @@ else {
                       </Grid>
                     </Grid>
                   </Paper>)}) } 
-                  <div className={classes.contpagination} ><Pagination className={classes.pagination} count={totalPages} page={page} onChange={handleChange} /></div>
+                  <div className={classes.contpagination} >
+                      { totalPages > 1 ?  <Pagination className={classes.pagination} count={totalPages} page={page} onChange={handleChange} /> : '' }
+                  </div>
 
     </div>
   );
