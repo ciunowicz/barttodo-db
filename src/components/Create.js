@@ -10,7 +10,7 @@ import {
     CardActions,
     IconButton
   } from '@material-ui/core';
-  
+  import { saveLoc } from '../common/LocStore';
   import {Grid} from '@material-ui/core';
   import TextField from '@material-ui/core/TextField';
   import SaveIcon from '@material-ui/icons/Save';
@@ -92,7 +92,7 @@ let date_save_end = datetime_end;
     rec.end =  date_save_end
     rec.id_desc = desc_id;
 
-    
+    saveLoc(desc_id);
     dbSave(rec,addLink);
     // history.push('/');
    /*  function sleep (time) {

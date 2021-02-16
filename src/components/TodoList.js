@@ -14,6 +14,7 @@ import Pagination from "@material-ui/lab/Pagination";
 import useStyles from '../common/styles';
 
 import { dbHost, nullDate, getdbDesc,getdb  } from '../common/Db';
+import { saveLoc, loadLoc } from '../common/LocStore';
 // import data from '../Data';
 
 
@@ -49,32 +50,7 @@ const TodoList = () => {
    
 }
 
-function saveLoc(id){
 
-  let data = { iddesc: id };
-  
-  if (typeof(Storage) !== "undefined") 
-  {
-      localStorage.setItem("BartTodo", JSON.stringify(data));
-  }
-  else  { 
-          alert("Your browser does not support localStorage");
-        }
-}
-
-function loadLoc() {
-  let todosData;
-
-  if (typeof(Storage) !== "undefined") {
-   
-    if (localStorage.getItem("BartTodo")) {
-        todosData = JSON.parse(localStorage.getItem("BartTodo"));
-    } 
-    
-  } 
-
-  return  todosData;
-}
 
   const loadData2 = React.useCallback( (desc) => {
     let host = dbHost + `page/?p=${page}&l=${pageSize}`;
