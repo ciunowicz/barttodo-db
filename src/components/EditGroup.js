@@ -63,7 +63,7 @@ const EditGroup = ()=> {
     let rec = {text: textDesc};
     
     dbSaveNote(rec,addNoteLink);
-  
+    setTextDesc('');
     setTimeout( loadData ,1000);
   
   }

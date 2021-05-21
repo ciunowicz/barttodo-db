@@ -2,7 +2,7 @@ import React , { useState, useEffect  } from 'react';
 import { useParams} from "react-router-dom";
 import dbSave ,  { dbHost, deleteLink, nullDate, updateLink,dbDelete, getdbDesc } from '../common/Db';
 import useStyles from '../common/styles';
-
+import { saveLoc } from '../common/LocStore';
 
 import {
     Card,
@@ -135,6 +135,7 @@ setTodos(Todos)
   Todos.created = Todos.created + ":00.000Z";
   
 	  dbSave(Todos,  updateLink + id);
+    saveLoc(desc_id);
     //  history.push('/');
    window.location.href = "/"
     

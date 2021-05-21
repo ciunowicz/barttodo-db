@@ -110,6 +110,7 @@ const dbSave = async  (todo,link) => {
   
       try {
           const data = await response.json();
+          alert("Data saved")
           return data;
           // setTimeout( () =>{  window.location.href = "/" },500);
           } catch (err) {
